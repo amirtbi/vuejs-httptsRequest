@@ -1,53 +1,54 @@
 <template>
   <learning-survey></learning-survey>
-  <user-experiences :user-experiences="enteredUserExperiences"></user-experiences>
+  <user-experiences
+    
+  ></user-experiences>
 </template>
 
-
 <script>
-import LearningSurvey from './components/Survey/LearningSurvey.vue';
-import UserExperiences from './components/Survey/UserExperiences.vue';
+import LearningSurvey from "./components/Survey/LearningSurvey.vue";
+import UserExperiences from "./components/Survey/UserExperiences.vue";
 export default {
-  components:{
+  components: {
     LearningSurvey,
-    UserExperiences
+    UserExperiences,
   },
-  data(){
-    return{
-      enteredUserExperiences:[
-        {
-          id:"AMIR",
-          name:"AMIR",
-          rating:"Poor"
-        },
-        {
-          id:"ALI",
-          name:"ALI",
-          rating:"Average"
-        }
-      ]
-    }
-}
-}
+  data() {
+    return {
+    
+
+      savedSurveyResults: [],
+    };
+  },
+  // methods:{
+  //   storeSurvey(surveyData){
+     
+  //     const result = {
+  //       name:surveyData.name,
+  //       rating:surveyData.rating,
+  //       id:new Date().toISOString
+  //     };
+  //     this.savedSurveyResults.push(result);
+  //   }
+  // }
+};
 </script>
 
-
-<style >
-@import url('https://fonts.googleapis.com/css2?family=Karla:wght@300&display=swap');
-:root{
-  --primaryColor:#02044a;
-  --secondaryColor:#dddddd;
-  --textColor:white;
-  --accentColor:#25CC88;
-  
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Karla:wght@300&display=swap");
+:root {
+  --primaryColor: #02044a;
+  --secondaryColor: #dddddd;
+  --textColor: white;
+  --accentColor: #25cc88;
 }
-html,body{
+html,
+body {
   margin: 0;
   padding: 0;
-  font-family: 'Karla', sans-serif;
+  font-family: "Karla", sans-serif;
 }
-*{
+* {
   box-sizing: border-box;
 }
-
 </style>
