@@ -6,7 +6,8 @@
         <base-button @click="loadExperiences">Load Data</base-button>
       </div>
       <div v-if="isLoading" class="lds-dual-ring"><div></div></div>
-      <ul v-else>
+      <p class="caution-meessage" v-else-if="!isLoading && (!results || results.length===0)">There is no experience, enter some ...</p>
+      <ul v-else-if="!isLoading && results && results.length>0">
         <li v-for="experience in results" :key="experience.id">
           <p>
             <strong>{{ experience.name }}</strong> rated the learning
@@ -126,6 +127,13 @@ p strong {
     transform: rotate(360deg);
   }
 }
+.caution-meessage{
+    color: orange !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 1.2rem !important;
+    width: 100%;
+    text-align: center;
 
+}
 
 </style>
