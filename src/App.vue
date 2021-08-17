@@ -1,26 +1,53 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <learning-survey></learning-survey>
+  <user-experiences :user-experiences="enteredUserExperiences"></user-experiences>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
 
+<script>
+import LearningSurvey from './components/Survey/LearningSurvey.vue';
+import UserExperiences from './components/Survey/UserExperiences.vue';
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+  components:{
+    LearningSurvey,
+    UserExperiences
+  },
+  data(){
+    return{
+      enteredUserExperiences:[
+        {
+          id:"AMIR",
+          name:"AMIR",
+          rating:"Poor"
+        },
+        {
+          id:"ALI",
+          name:"ALI",
+          rating:"Average"
+        }
+      ]
+    }
+}
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+
+<style >
+@import url('https://fonts.googleapis.com/css2?family=Karla:wght@300&display=swap');
+:root{
+  --primaryColor:#02044a;
+  --secondaryColor:#dddddd;
+  --textColor:white;
+  --accentColor:#25CC88;
+  
 }
+html,body{
+  margin: 0;
+  padding: 0;
+  font-family: 'Karla', sans-serif;
+}
+*{
+  box-sizing: border-box;
+}
+
 </style>
