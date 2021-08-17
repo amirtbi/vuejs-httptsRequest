@@ -5,7 +5,8 @@
         <h2>Submitted experiences</h2>
         <base-button @click="loadExperiences">Load Data</base-button>
       </div>
-      <ul>
+      <div v-if="isLoading" class="lds-dual-ring"><div></div></div>
+      <ul v-else>
         <li v-for="experience in results" :key="experience.id">
           <p>
             <strong>{{ experience.name }}</strong> rated the learning
@@ -22,10 +23,13 @@ export default {
   data() {
     return {
       results: [],
+      isLoading:false,
     };
   },
   methods: {
     loadExperiences() {
+        //load data using fetchApi
+        this.isLoading = true;
       fetch(
         "https://vue-http-demo-cc5c5-default-rtdb.firebaseio.com/survey.json"
       )
@@ -35,7 +39,7 @@ export default {
           }
         })
         .then((data)=> {
-         
+         this.isLoading = false;
           const result = [];
           for (const id in data) {
             result.push({
@@ -49,6 +53,9 @@ export default {
         });
     },
   },
+  mounted(){
+      this.loadExperiences();
+  }
 };
 </script>
 
@@ -91,4 +98,34 @@ p {
 p strong {
   color: var(--accentColor);
 }
+/*loading style */
+.lds-dual-ring {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  width: 100%;
+  
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 20px;
+  height:20px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid var(--accentColor);
+  border-color: var(--accentColor) transparent  var(--accentColor) transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
 </style>
