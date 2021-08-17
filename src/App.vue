@@ -20,6 +20,7 @@ export default {
       savedSurveyResults: [],
     };
   },
+  //disabling methods due to use of fetchApi and firebase
   // methods:{
   //   storeSurvey(surveyData){
      
