@@ -1,34 +1,100 @@
 <template>
   <base-card>
-    <form class="form-control" @submit.prevent>
+    <form class="form-control" @submit.prevent="storeSurveyData">
       <div class="form-title">
         <h1>How Was Your Learning Experience?</h1>
       </div>
       <div class="form-row">
         <label for="username">Your Name</label>
-        <input type="text" name="username" id="username" />
+        <input type="text" name="username" id="username" v-model.trim="name" />
       </div>
       <div class="form-column">
         <h2 id="form-column__title">My Learning Experience was ...</h2>
         <div class="form-column__row">
-          <input type="radio" name="user-rating" id="poor-rating" />
-          <label for="poor-rating" value="poor">Poor</label>
+          <input
+            type="radio"
+            name="user-rating"
+            value="Poor"
+            id="poor-rating"
+            v-model="rating"
+          />
+          <label for="poor-rating">Poor</label>
         </div>
         <div class="form-column__row">
-          <input type="radio" name="user-rating" id="average-rating" />
-          <label for="average-rating" value="average">Average</label>
+          <input
+            type="radio"
+            name="user-rating"
+            value="Average"
+            id="average-rating"
+            v-model="rating"
+          />
+          <label for="average-rating">Average</label>
         </div>
         <div class="form-column__row">
-          <input type="radio" name="user-rating" id="great-rating" />
-          <label for="great-rating" value="great">Great</label>
+          <input
+            type="radio"
+            name="user-rating"
+            value="Great"
+            id="great-rating"
+            v-model="rating"
+          />
+          <label for="great-rating">Great</label>
         </div>
       </div>
+      <div class="form-row" v-if="formValidity === 'invalid'">
+        <small id="caution-message">There is at least one empty field!</small>
+      </div>
       <div class="button-container">
-          <base-button>SUBMIT</base-button>
+        <base-button>SUBMIT</base-button>
       </div>
     </form>
   </base-card>
 </template>
+
+<script>
+export default {
+  //   emits: ["submitSurvey"],
+  data() {
+    return {
+      name: "",
+      rating: null,
+      formValidity: "pending",
+    };
+  },
+  methods: {
+    storeSurveyData() {
+      //   const userEnteredExperience = {
+      //     id: new Date().toISOString,
+      //     name: this.name,
+      //     rating: this.rating,
+      //   };
+
+        if (
+          this.name === "" ||
+          this.rating === ""
+        ) {
+            this.formValidity = "invalid";
+            return;
+        }
+
+      this.formValidity = "valid";
+      //   this.$emit("submitSurvey", userEnteredExperience);
+      fetch(
+        "https://vue-http-demo-cc5c5-default-rtdb.firebaseio.com/survey.json",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name: this.name, chosenRating: this.rating }),
+        }
+      );
+      this.rating = null;
+      this.name = "";
+    },
+  },
+};
+</script>
 
 <style scoped>
 div.form-title {
@@ -104,11 +170,17 @@ label {
   font-family: inherit;
   font-weight: bold;
 }
-div.button-container{
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 1.2rem;
+div.button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1.2rem;
+}
+small#caution-message {
+  color: orange;
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: bold;
 }
 </style>
