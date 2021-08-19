@@ -42,7 +42,11 @@
         </div>
       </div>
       <div class="form-row" v-if="formValidity === 'invalid'">
+
         <small id="caution-message">There is at least one empty field!</small>
+      </div>
+      <div v-else-if="error" class="form-row">
+          <small id="caution-message">{{ error }}</small>
       </div>
       <div class="button-container">
         <base-button>SUBMIT</base-button>
@@ -59,6 +63,7 @@ export default {
       name: "",
       rating: null,
       formValidity: "pending",
+      error:null
     };
   },
   methods: {
@@ -71,14 +76,17 @@ export default {
 
         if (
           this.name === "" ||
-          this.rating === ""
+          TouchList.rating === ""
         ) {
             this.formValidity = "invalid";
             return;
         }
 
       this.formValidity = "valid";
+      //when not using fetchAPI
       //   this.$emit("submitSurvey", userEnteredExperience);
+      //using fetchAPI
+      this.error = null;
       fetch(
         "https://vue-http-demo-cc5c5-default-rtdb.firebaseio.com/survey.json",
         {
@@ -88,7 +96,19 @@ export default {
           },
           body: JSON.stringify({ name: this.name, chosenRating: this.rating }),
         }
-      );
+      ).then(response=>{
+          if(response.ok){
+              ///
+          }else{
+              //throw new Error("....");
+              throw "Could not save the data !";
+          }
+      }).catch(error=>{
+          console.log(error);
+          this.error = error;
+          //when using new Error(...)
+          //this.error = error.message
+      });
       this.rating = null;
       this.name = "";
     },

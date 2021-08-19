@@ -13,7 +13,7 @@
         class="caution-meessage"
         v-else-if="!isLoading && (!results || results.length === 0)"
       >
-        Nothing is found!, please enter some data...
+        No stored experience found! Sart storing experience...
       </p>
       <ul v-else-if="!isLoading && results && results.length > 0">
         <li v-for="experience in results" :key="experience.id">
@@ -62,6 +62,8 @@ export default {
                 this.isLoading = false;
                 this.error = "Something is wrong!. Please try again!";
             });
+
+       
     },
   },
   mounted() {
@@ -137,7 +139,7 @@ p strong {
   }
 }
 .caution-meessage {
-  color: orange !important;
+  color: #a59f9e !important;
   padding: 0.5rem 1rem !important;
   font-size: 1.2rem !important;
   width: 100%;
