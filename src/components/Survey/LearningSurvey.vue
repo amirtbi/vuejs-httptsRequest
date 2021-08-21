@@ -42,11 +42,10 @@
         </div>
       </div>
       <div class="form-row" v-if="formValidity === 'invalid'">
-
         <small id="caution-message">There is at least one empty field!</small>
       </div>
       <div v-else-if="error" class="form-row">
-          <small id="caution-message">{{ error }}</small>
+        <small id="caution-message">{{ error }}</small>
       </div>
       <div class="button-container">
         <base-button>SUBMIT</base-button>
@@ -56,6 +55,20 @@
 </template>
 
 <script>
+const axios = require('axios');
+async function postServey(postData) {
+  try{
+    await axios.post(
+     "https://vue-http-demo-cc5c5-default-rtdb.firebaseio.com/survey.json",
+     postData
+   )
+
+  }
+  catch(error){
+    console.log(error,"something went wrong!?");
+  }
+}
+
 export default {
   //   emits: ["submitSurvey"],
   data() {
@@ -63,7 +76,7 @@ export default {
       name: "",
       rating: null,
       formValidity: "pending",
-      error:null
+      error: null,
     };
   },
   methods: {
@@ -74,41 +87,46 @@ export default {
       //     rating: this.rating,
       //   };
 
-        if (
-          this.name === "" ||
-          TouchList.rating === ""
-        ) {
-            this.formValidity = "invalid";
-            return;
-        }
+      if (this.name === "" || TouchList.rating === "") {
+        this.formValidity = "invalid";
+        return;
+      }
 
       this.formValidity = "valid";
       //when not using fetchAPI
       //   this.$emit("submitSurvey", userEnteredExperience);
-      //using fetchAPI
+     
       this.error = null;
-      fetch(
-        "https://vue-http-demo-cc5c5-default-rtdb.firebaseio.com/survey.json",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ name: this.name, chosenRating: this.rating }),
-        }
-      ).then(response=>{
-          if(response.ok){
-              ///
-          }else{
-              //throw new Error("....");
-              throw "Could not save the data !";
-          }
-      }).catch(error=>{
-          console.log(error);
-          this.error = error;
-          //when using new Error(...)
-          //this.error = error.message
-      });
+      const postData = { name: this.name, chosenRating: this.rating };
+      postServey(postData)
+      .catch(error=>{
+        throw new Error(error);
+      })
+       //using fetchAPI
+      // fetch(
+      //   "https://vue-http-demo-cc5c5-default-rtdb.firebaseio.com/survey.json",
+      //   {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify({ name: this.name, chosenRating: this.rating }),
+      //   }
+      // )
+      //   .then((response) => {
+      //     if (response.ok) {
+      //       ///
+      //     } else {
+      //       //throw new Error("....");
+      //       throw "Could not save the data !";
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //     this.error = error;
+      //     //when using new Error(...)
+      //     //this.error = error.message
+      //   });
       this.rating = null;
       this.name = "";
     },

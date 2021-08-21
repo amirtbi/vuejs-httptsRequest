@@ -28,6 +28,7 @@
 </template>
 
 <script>
+const axios = require("axios");
 export default {
   data() {
     return {
@@ -40,24 +41,33 @@ export default {
     loadExperiences() {
       //load data using fetchApi
       this.isLoading = true;
-      fetch("https://vue-http-demo-cc5c5-default-rtdb.firebaseio.com/survey.json")
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          }
+      //using axios
+      axios.get('https://vue-http-demo-cc5c5-default-rtdb.firebaseio.com/survey.json')
+        .then(response=>{
+          //console.log(response.data);
+            return response.data;
+            
         })
+      // fetch("https://vue-http-demo-cc5c5-default-rtdb.firebaseio.com/survey.json")
+      //   .then((response) => {
+      //     if (response.ok) {
+      //       return response.json();
+      //     }
+      //   })
         .then((data) => {
+          
           this.isLoading = false;
           const result = [];
-          for (const id in data) {
+          for (const item in data) {
             result.push({
-              id: id,
-              name: data[id].name,
-              rating: data[id].chosenRating,
+              id: item,
+              name: data[item].name,
+              rating: data[item].chosenRating,
             })
           }
           this.results = result;
-        }).catch(error=>{
+        })
+        .catch(error=>{
                 console.log(error);
                 this.isLoading = false;
                 this.error = "Something is wrong!. Please try again!";
